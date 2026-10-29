@@ -818,6 +818,8 @@ This extra density-matrix comparison uses the same selected ideal HVA parameters
 
 {_md_table(["processor", "g", "L", "compiled 2q", "noisy energy", "noisy F", "mx", "Czz"], noisy_arch_table)}
 
+Across these three fields, A and B overlap in this locked setup. D uses half as many compiled two-qubit gates and reaches higher simulated density-matrix fidelity at each sampled field. This is a result under the supplied synthetic model, not a hardware-performance claim.
+
 ![Supplementary noisy A/B/D comparison](results/figures/phase2_s1_noisy_architectures.png)
 
 ## Processor D and architecture comparison

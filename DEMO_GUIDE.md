@@ -26,6 +26,8 @@ Show `phase2_s1_resources.png` and `processor_D_topology.png`. D uses a six-qubi
 
 Show the Bell fidelity figure and report table. The direct pair is `0–1`; the farthest pair is `0–3`. Their noisy simulated fidelities are `0.9598 ± 0.0022` and `0.9459 ± 0.0025`, respectively, using 4,096 shots per Pauli basis. Then point to the required noisy D PS-S1 table for `g=0.5, 1.0, 2.0`.
 
+If time permits, show the supplementary A/B/D plot: D uses half as many compiled two-qubit gates for each sampled circuit and has higher simulated ground-state fidelity at all three fields (`0.892`, `0.923`, `0.919`) than A/B (`0.842`, `0.886`, `0.880`). A and B overlap in this comparison under the supplied circuit and noise settings. Keep the claim tied to this simulator study.
+
 ### 2:45–3:00 — Close with a precise claim
 
 “The evidence supports a resource-efficiency result within the locked small-circuit simulation: D reduces compiled two-qubit gate count for these HVA circuits while preserving the ideal state. The supplied noise model does not establish a hardware advantage, and our results do not claim one.”

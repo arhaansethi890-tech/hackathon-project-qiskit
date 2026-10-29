@@ -58,7 +58,7 @@ The official `qff_sim.py` helper is included unchanged. It supplies the locked A
 python tools/check_processor_d.py processors/processor_D.json 6
 ```
 
-Phase 2 result tables are in `results/tables/`: `bell.csv`, `resources.csv`, `s1_results.csv`, `s1_noisy.csv`, and (after the supplement command) `s1_seed_summary.csv` plus `s1_noisy_architectures.csv`. Figures and the Processor D graph are in `results/figures/`. The complete input conventions and scoring checklist are summarized in `docs/PHASE2_SPEC.md`; the judge-facing walkthrough is in `DEMO_GUIDE.md`; the previous Phase 1 notebook, report, README, and dependency pins are retained as archives.
+Phase 2 result tables are in `results/tables/`: `bell.csv`, `resources.csv`, `s1_results.csv`, `s1_noisy.csv`, `s1_seed_summary.csv`, and `s1_noisy_architectures.csv`. The supplementary noisy comparison figure and Processor D graph are in `results/figures/`. The complete input conventions and scoring checklist are summarized in `docs/PHASE2_SPEC.md`; the judge-facing walkthrough is in `DEMO_GUIDE.md`; the previous Phase 1 notebook, report, README, and dependency pins are retained as archives.
 
 The file-by-file comparison with the previous public export is recorded in `CHANGE_AUDIT_REPORT.md`.
 
