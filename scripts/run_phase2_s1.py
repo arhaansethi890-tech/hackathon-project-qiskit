@@ -28,6 +28,7 @@ import qff_sim as qff  # noqa: E402
 DATA_DIR = ROOT / "data" / "s1"
 TABLES_DIR = ROOT / "results" / "tables"
 RAW_DIR = ROOT / "results" / "raw"
+CHECKPOINT_DIR = RAW_DIR / "phase2_s1_checkpoints"
 FIGURES_DIR = ROOT / "results" / "figures"
 G_GRID = (0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 2.00)
 SEEDS = (0, 1, 2)
@@ -194,25 +195,154 @@ def _state_metrics(best: dict[str, Any], hamiltonian: SparsePauliOp, exact0: flo
     }
 
 
-def run_s1_grid(n: int, max_layers: int) -> tuple[list[dict[str, Any]], dict[float, dict[str, Any]], list[dict[str, Any]]]:
+def _checkpoint_path(n: int, g: float) -> Path:
+    return CHECKPOINT_DIR / f"N{n}_g{g:.2f}.json"
+
+
+def _run_metadata(run: dict[str, Any]) -> dict[str, Any]:
+    return {key: value for key, value in run.items() if key != "state"}
+
+
+def _save_grid_checkpoint(n: int, g: float, rows: list[dict[str, Any]],
+                          runs: list[dict[str, Any]]) -> None:
+    path = _checkpoint_path(n, g)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "format_version": 1,
+        "n": int(n),
+        "g": float(g),
+        "completed_layers": sorted({int(row["layers"]) for row in rows}),
+        "rows": rows,
+        "runs": [_run_metadata(run) for run in runs],
+    }
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(payload, indent=2, default=_to_json) + "\n", encoding="utf-8")
+    temporary.replace(path)
+
+
+def _load_grid_checkpoint(n: int, g: float, max_layers: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    path = _checkpoint_path(n, g)
+    if not path.exists():
+        return [], []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("format_version") != 1 or int(payload.get("n", -1)) != n or not math.isclose(float(payload.get("g", -1)), g):
+        raise ValueError(f"Checkpoint does not match N={n}, g={g:.2f}: {path}")
+    rows = payload.get("rows", [])
+    runs = payload.get("runs", [])
+    completed = payload.get("completed_layers", [])
+    expected = list(range(1, len(completed) + 1))
+    if completed != expected or len(rows) != len(completed):
+        raise ValueError(f"Checkpoint has a missing or inconsistent layer record: {path}")
+    if [int(row["layers"]) for row in rows] != completed:
+        raise ValueError(f"Checkpoint layer rows do not match completed_layers: {path}")
+    if any(int(row["N"]) != n or not math.isclose(float(row["g"]), g) for row in rows):
+        raise ValueError(f"Checkpoint contains a result for a different instance: {path}")
+    if any(int(run["n"]) != n or not math.isclose(float(run["g"]), g) for run in runs):
+        raise ValueError(f"Checkpoint contains optimizer data for a different instance: {path}")
+    if completed and completed[-1] > max_layers:
+        raise ValueError(f"Checkpoint reaches L={completed[-1]}, above requested max L={max_layers}.")
+    for layer in completed:
+        layer_runs = [run for run in runs if int(run["layers"]) == int(layer)]
+        if len(layer_runs) != len(SEEDS) or {int(run["seed"]) for run in layer_runs} != set(SEEDS):
+            raise ValueError(f"Checkpoint L={layer} is missing an official seed: {path}")
+    return rows, runs
+
+
+def _restore_run_state(run: dict[str, Any], hamiltonian: SparsePauliOp) -> dict[str, Any]:
+    circuit, parameters = qff.hva_ansatz(int(run["n"]), int(run["layers"]), zz_mode="cx")
+    state = Statevector.from_instruction(_bind(circuit, parameters, run["parameters"]))
+    return {**run, "state": state, "energy": float(run["energy"]),
+            "parameters": list(run["parameters"])}
+
+
+def _typed_csv(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    integer_fields = {"N", "layers", "best_seed", "optimizer_calls", "n_params", "two_q_on_D"}
+    for row in _read_csv(path):
+        typed: dict[str, Any] = {}
+        for key, value in row.items():
+            if value.lower() in {"true", "false"}:
+                typed[key] = value.lower() == "true"
+            elif value == "":
+                typed[key] = value
+            else:
+                try:
+                    number = float(value)
+                    typed[key] = int(number) if key in integer_fields else number
+                except ValueError:
+                    typed[key] = value
+        rows.append(typed)
+    return rows
+
+
+def _load_saved_final_records(n: int = 4) -> tuple[list[dict[str, Any]], dict[float, dict[str, Any]]]:
+    """Restore finalized VQE states from checked-in tables for a bonus-only run."""
+    rows = [row for row in _typed_csv(TABLES_DIR / "s1_results.csv") if int(row["N"]) == n]
+    runs = json.loads((RAW_DIR / "phase2_s1_optimizer_runs.json").read_text(encoding="utf-8"))
+    best_parameters = json.loads((RAW_DIR / "phase2_s1_best_parameters.json").read_text(encoding="utf-8"))
+    final_by_g: dict[float, dict[str, Any]] = {}
+    for g in G_GRID:
+        candidates = [row for row in rows if int(row["N"]) == n and math.isclose(float(row["g"]), g)]
+        if not candidates:
+            raise FileNotFoundError(f"Saved N={n}, g={g:.2f} VQE rows are required before an N=6-only run.")
+        passing = [row for row in candidates if bool(row["energy_tolerance_met"])]
+        selected = min(passing, key=lambda row: int(row["layers"])) if passing else min(
+            candidates, key=lambda row: abs(float(row["energy_err"]))
+        )
+        key = f"N{n}_g{g:.2f}"
+        if key not in best_parameters:
+            raise FileNotFoundError(f"Missing saved selected parameters for {key}.")
+        best = best_parameters[key]
+        if int(best["layers"]) != int(selected["layers"]) or int(best["seed"]) != int(selected["best_seed"]):
+            raise ValueError(f"Saved selected parameters disagree with the N={n}, g={g:.2f} result table.")
+        matching = [run for run in runs if int(run["n"]) == n
+                    and math.isclose(float(run["g"]), g)
+                    and int(run["layers"]) == int(best["layers"])
+                    and int(run["seed"]) == int(best["seed"])]
+        if not matching:
+            raise FileNotFoundError(f"Missing saved optimizer details for {key}.")
+        hamiltonian, exact0, exact1 = _instance(n, g)
+        eigenvalues, exact_states = qff.exact_spectrum(hamiltonian, k=2)
+        if not math.isclose(float(eigenvalues[0]), exact0, rel_tol=0.0, abs_tol=1e-9):
+            raise ValueError(f"Saved N={n}, g={g:.2f} E0 no longer matches the locked instance.")
+        restored = _restore_run_state(matching[0], hamiltonian)
+        final_by_g[g] = {
+            "n": n, "g": g, "layers": int(best["layers"]), "run": restored,
+            "hamiltonian": hamiltonian, "exact0": exact0, "exact1": exact1,
+            "exact_states": exact_states,
+            "tolerance_met": abs(float(best["energy"]) - exact0) < ENERGY_TOL,
+        }
+    return rows, final_by_g
+
+
+def run_s1_grid(n: int, max_layers: int, resume: bool = False) -> tuple[list[dict[str, Any]], dict[float, dict[str, Any]], list[dict[str, Any]]]:
     rows: list[dict[str, Any]] = []
     final_by_g: dict[float, dict[str, Any]] = {}
     all_runs: list[dict[str, Any]] = []
     for g in G_GRID:
-        print(f"[PS-S1] N={n}, g={g:.2f}: starting exact check and HVA layer scan", flush=True)
+        checkpoint = _checkpoint_path(n, g)
+        if resume:
+            field_rows, field_runs = _load_grid_checkpoint(n, g, max_layers)
+        else:
+            checkpoint.unlink(missing_ok=True)
+            field_rows, field_runs = [], []
+        print(f"[PS-S1] N={n}, g={g:.2f}: "
+              f"resuming from L={len(field_rows)}" if field_rows else
+              f"[PS-S1] N={n}, g={g:.2f}: starting exact check and HVA layer scan", flush=True)
         hamiltonian, locked_e0, locked_e1 = _instance(n, g)
         eigenvalues, exact_states = qff.exact_spectrum(hamiltonian, k=2)
         if not math.isclose(float(eigenvalues[0]), locked_e0, rel_tol=0.0, abs_tol=1e-9):
             raise ValueError(f"N={n}, g={g}: computed E0 differs from locked instance")
         if not math.isclose(float(eigenvalues[1]), locked_e1, rel_tol=0.0, abs_tol=1e-9):
             raise ValueError(f"N={n}, g={g}: computed E1 differs from locked instance")
-
-        chosen_layer = None
-        chosen_run = None
-        best_any = None
-        for layers in range(1, max_layers + 1):
+        rows.extend(field_rows)
+        all_runs.extend(field_runs)
+        completed = len(field_rows)
+        already_passed = any(bool(row["energy_tolerance_met"]) for row in field_rows)
+        for layers in range(completed + 1, max_layers + 1) if not already_passed else ():
             layer_runs = [_optimize_hva(n, g, layers, seed, hamiltonian) for seed in SEEDS]
-            all_runs.extend(layer_runs)
+            field_runs.extend(_run_metadata(run) for run in layer_runs)
+            all_runs.extend(_run_metadata(run) for run in layer_runs)
             best = _selected_best(layer_runs, locked_e0)
             state_metrics = _state_metrics(best, hamiltonian, locked_e0, locked_e1, exact_states, n)
             row = {
@@ -227,20 +357,28 @@ def run_s1_grid(n: int, max_layers: int) -> tuple[list[dict[str, Any]], dict[flo
                 )["cx"],
             }
             rows.append(row)
+            field_rows.append(row)
+            _save_grid_checkpoint(n, g, field_rows, field_runs)
             print(
                 f"[PS-S1] N={n}, g={g:.2f}, L={layers}: best |E-E0|="
                 f"{abs(state_metrics['energy_err']):.3e}; calls={row['optimizer_calls']}",
                 flush=True,
             )
-            if best_any is None or abs(best["energy"] - locked_e0) < abs(best_any["energy"] - locked_e0):
-                best_any = best
-                chosen_layer = layers
-                chosen_run = best
             if abs(state_metrics["energy_err"]) < ENERGY_TOL:
-                chosen_layer, chosen_run = layers, best
                 break
-        if chosen_run is None:
+        if not field_rows:
             raise RuntimeError(f"No VQE runs produced for N={n}, g={g}")
+        passing_rows = [row for row in field_rows if bool(row["energy_tolerance_met"])]
+        selected_row = min(passing_rows, key=lambda row: int(row["layers"])) if passing_rows else min(
+            field_rows, key=lambda row: abs(float(row["energy_err"]))
+        )
+        chosen_layer = int(selected_row["layers"])
+        chosen_seed = int(selected_row["best_seed"])
+        chosen_run_meta = next(
+            run for run in field_runs
+            if int(run["layers"]) == chosen_layer and int(run["seed"]) == chosen_seed
+        )
+        chosen_run = _restore_run_state(chosen_run_meta, hamiltonian)
         final_by_g[g] = {
             "n": n,
             "g": g,
@@ -333,6 +471,73 @@ def _noisy_s1(final_by_g: dict[float, dict[str, Any]], n: int = 4) -> list[dict[
             "energy_noisy": energy,
             "fidelity_noisy_dm": f_dm,
         })
+    return rows
+
+
+def _seed_summary_rows(s1_rows: list[dict[str, Any]], optimizer_runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Show all three official starts at the selected minimum layer for each instance."""
+    summary = []
+    sizes = sorted({int(row["N"]) for row in s1_rows})
+    for n in sizes:
+        for g in G_GRID:
+            candidates = [row for row in s1_rows if int(row["N"]) == n and math.isclose(float(row["g"]), g)]
+            if not candidates:
+                continue
+            passing = [row for row in candidates if bool(row["energy_tolerance_met"])]
+            selected = min(passing, key=lambda row: int(row["layers"])) if passing else min(
+                candidates, key=lambda row: abs(float(row["energy_err"]))
+            )
+            layers = int(selected["layers"])
+            exact0 = float(selected["exact_E0"])
+            starts = [run for run in optimizer_runs if int(run["n"]) == n
+                      and math.isclose(float(run["g"]), g) and int(run["layers"]) == layers]
+            for run in sorted(starts, key=lambda item: int(item["seed"])):
+                error = float(run["energy"]) - exact0
+                summary.append({
+                    "N": n,
+                    "g": g,
+                    "selected_layers": layers,
+                    "seed": int(run["seed"]),
+                    "energy": float(run["energy"]),
+                    "exact_E0": exact0,
+                    "abs_energy_error": abs(error),
+                    "tolerance_met": abs(error) < ENERGY_TOL,
+                    "optimizer_calls": int(run["calls"]),
+                    "optimizer_success": bool(run["optimizer_success"]),
+                })
+    return summary
+
+
+def _noisy_architecture_s1(final_by_g: dict[float, dict[str, Any]], n: int = 4) -> list[dict[str, Any]]:
+    """Supplementary A/B/D density-matrix comparison on identical selected HVA parameters."""
+    processors = {**PROCESSORS, "D": load_d()}
+    rows = []
+    for g in NOISY_G:
+        record = final_by_g[g]
+        if record["n"] != n:
+            continue
+        for name, processor in processors.items():
+            zz_mode = "rzz" if name == "D" else "cx"
+            circuit, parameters = qff.hva_ansatz(n, record["layers"], zz_mode=zz_mode)
+            bound = _bind(circuit, parameters, record["run"]["parameters"])
+            rho = qff.noisy_density_matrix(bound, processor, noisy=True)
+            obs = qff.expectations(rho, qff.observable_ops(n))
+            metrics = qff.circuit_metrics(circuit, processor)
+            energy = float(np.real(rho.expectation_value(record["hamiltonian"])))
+            rows.append({
+                "N": n,
+                "g": g,
+                "layers": int(record["layers"]),
+                "processor": name,
+                "compiled_two_q": int(metrics["cx"]),
+                "depth": int(metrics["depth"]),
+                "energy_noisy": energy,
+                "energy_error_noisy": energy - float(record["exact0"]),
+                "fidelity_noisy_dm": float(state_fidelity(record["exact_states"][0], rho)),
+                "mx_noisy": obs["mx"],
+                "czz_nn_noisy": obs["czz_nn"],
+                "mz2_noisy": obs["mz2"],
+            })
     return rows
 
 
@@ -443,6 +648,32 @@ def _plot_outputs(s1_rows: list[dict[str, Any]], noisy_rows: list[dict[str, Any]
     plt.close(fig)
 
 
+def _plot_noisy_architecture(noisy_rows: list[dict[str, Any]]) -> None:
+    if not noisy_rows:
+        return
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    colors = {"A": "#4c78a8", "B": "#f58518", "D": "#54a24b"}
+    fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.3), constrained_layout=True)
+    for processor in ("A", "B", "D"):
+        subset = sorted((row for row in noisy_rows if row["processor"] == processor),
+                        key=lambda row: float(row["g"]))
+        gs = [float(row["g"]) for row in subset]
+        axes[0].plot(gs, [float(row["fidelity_noisy_dm"]) for row in subset],
+                     marker="o", color=colors[processor], label=processor)
+        axes[1].semilogy(gs, [max(abs(float(row["energy_error_noisy"])), 1e-14) for row in subset],
+                         marker="o", color=colors[processor], label=processor)
+    axes[0].set_ylabel("Density-matrix ground-state fidelity")
+    axes[0].set_ylim(0, 1.02)
+    axes[1].set_ylabel("Absolute noisy energy error")
+    for ax in axes:
+        ax.set_xlabel("Transverse field g")
+        ax.grid(alpha=0.25)
+        ax.legend(title="Processor", frameon=False)
+    fig.suptitle("Supplementary noisy A/B/D comparison (official synthetic noise)")
+    fig.savefig(FIGURES_DIR / "phase2_s1_noisy_architectures.png", dpi=180)
+    plt.close(fig)
+
+
 def _md_table(headers: list[str], rows: list[list[Any]]) -> str:
     head = "| " + " | ".join(headers) + " |"
     rule = "| " + " | ".join("---" for _ in headers) + " |"
@@ -452,7 +683,9 @@ def _md_table(headers: list[str], rows: list[list[Any]]) -> str:
 
 def _write_phase2_report(s1_rows: list[dict[str, Any]], noisy_rows: list[dict[str, Any]],
                          resources: list[dict[str, Any]], bell_rows: list[dict[str, Any]],
-                         include_n6: bool, max_layers: int) -> None:
+                         include_n6: bool, max_layers: int,
+                         seed_summary: list[dict[str, Any]],
+                         noisy_architecture_rows: list[dict[str, Any]]) -> None:
     finals = []
     for n in ((4, 6) if include_n6 else (4,)):
         for g in G_GRID:
@@ -482,6 +715,18 @@ def _write_phase2_report(s1_rows: list[dict[str, Any]], noisy_rows: list[dict[st
         f"{float(r['fidelity_noisy_dm']):.5f}", f"{float(r['mx_noisy']):.5f}",
         f"{float(r['czz_nn_noisy']):.5f}", f"{float(r['mz2_noisy']):.5f}",
     ] for r in noisy_rows]
+
+    seed_table = [[
+        str(r["N"]), f"{float(r['g']):.2f}", str(r["selected_layers"]), str(r["seed"]),
+        f"{float(r['energy']):.8f}", f"{float(r['abs_energy_error']):.2e}",
+        "yes" if bool(r["tolerance_met"]) else "no", str(r["optimizer_calls"]),
+    ] for r in seed_summary]
+
+    noisy_arch_table = [[
+        r["processor"], f"{float(r['g']):.2f}", str(r["layers"]), str(r["compiled_two_q"]),
+        f"{float(r['energy_noisy']):.6f}", f"{float(r['fidelity_noisy_dm']):.5f}",
+        f"{float(r['mx_noisy']):.5f}", f"{float(r['czz_nn_noisy']):.5f}",
+    ] for r in noisy_architecture_rows]
 
     bell_table = [[
         r["pair"], r["physical_pair"], str(r["pair_distance"]), r["condition"],
@@ -547,6 +792,12 @@ The table reports the best of the three official starts at the selected minimum 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 {chr(10).join('| ' + ' | '.join(row) + ' |' for row in n4_observable_table)}
 
+### Seed consistency at the selected layer
+
+The next table shows each of the three required random starts at the selected layer for each field. The best-seed row above remains the requested headline result; these rows show the spread behind that selection.
+
+{_md_table(["N", "g", "L", "seed", "VQE E", "|E−E0|", "tolerance met", "calls"], seed_table)}
+
 ![PS-S1 energy results](results/figures/phase2_s1_energy.png)
 
 ![PS-S1 observables across g](results/figures/phase2_s1_observables.png)
@@ -560,6 +811,14 @@ The exact observables show the finite-size crossover: transverse magnetization g
 The required noisy PS-S1 run uses the selected converged circuit at g=0.5, 1.0 and 2.0. The density matrix includes gate noise and excludes readout noise, as specified for the fidelity definition.
 
 {_md_table(["g", "L", "noisy energy", "noisy F", "mx", "Czz", "mz²/N²"], noise_table)}
+
+### Supplementary noisy A/B/D comparison
+
+This extra density-matrix comparison uses the same selected ideal HVA parameters for each field on A, B, and D, with the official per-gate noise model and no readout noise. It is supplemental context; the required Phase 2 noisy result above remains the Processor D result.
+
+{_md_table(["processor", "g", "L", "compiled 2q", "noisy energy", "noisy F", "mx", "Czz"], noisy_arch_table)}
+
+![Supplementary noisy A/B/D comparison](results/figures/phase2_s1_noisy_architectures.png)
 
 ## Processor D and architecture comparison
 
@@ -590,35 +849,74 @@ The required gates, noise parameters, shot count, seeds, and transpilation setti
     (ROOT / "report.md").write_text(report, encoding="utf-8")
 
 
-def generate_phase2_outputs(max_layers: int = DEFAULT_MAX_LAYERS, include_n6: bool = False) -> dict[str, Any]:
+def generate_phase2_outputs(max_layers: int = DEFAULT_MAX_LAYERS, include_n6: bool = False,
+                            resume: bool = False, n6_only: bool = False,
+                            supplement_only: bool = False) -> dict[str, Any]:
+    if n6_only and supplement_only:
+        raise ValueError("Choose either --n6-only or --supplement-only.")
+    if n6_only:
+        include_n6 = True
+        resume = True
     d = load_d()
     violations = qff.validate_processor_d(d, required_qubits=6 if include_n6 else 4)
     if violations:
         raise ValueError("Processor D fails the official checker: " + "; ".join(violations))
     all_rows: list[dict[str, Any]] = []
-    all_final: dict[tuple[int, float], dict[str, Any]] = {}
     all_runs: list[dict[str, Any]] = []
-    sizes = (4, 6) if include_n6 else (4,)
-    for n in sizes:
-        rows, finals, runs = run_s1_grid(n, max_layers)
-        all_rows.extend(rows)
-        all_runs.extend(runs)
-        for g, value in finals.items():
-            all_final[(n, g)] = value
+    all_final: dict[tuple[int, float], dict[str, Any]] = {}
 
-    _write_csv(TABLES_DIR / "s1_results.csv", all_rows)
-    _save_diagnostics(all_runs)
+    if supplement_only:
+        all_rows = _typed_csv(TABLES_DIR / "s1_results.csv")
+        all_runs = json.loads((RAW_DIR / "phase2_s1_optimizer_runs.json").read_text(encoding="utf-8"))
+        n4_rows, final4_saved = _load_saved_final_records(4)
+        del n4_rows
+        all_final.update({(4, g): value for g, value in final4_saved.items()})
+        include_n6 = any(int(row["N"]) == 6 for row in all_rows)
+        if include_n6:
+            _, final6_saved = _load_saved_final_records(6)
+            all_final.update({(6, g): value for g, value in final6_saved.items()})
+        noisy_rows = _typed_csv(TABLES_DIR / "s1_noisy.csv")
+        resources = _typed_csv(TABLES_DIR / "resources.csv")
+        bell_rows = _typed_csv(TABLES_DIR / "bell.csv")
+    else:
+        if n6_only:
+            n4_rows, final4_saved = _load_saved_final_records(4)
+            all_rows.extend(n4_rows)
+            all_final.update({(4, g): value for g, value in final4_saved.items()})
+            all_runs = [run for run in json.loads((RAW_DIR / "phase2_s1_optimizer_runs.json").read_text(encoding="utf-8"))
+                        if int(run["n"]) == 4]
+            rows, finals, runs = run_s1_grid(6, max_layers, resume=True)
+            all_rows.extend(rows)
+            all_runs.extend(runs)
+            all_final.update({(6, g): value for g, value in finals.items()})
+        else:
+            sizes = (4, 6) if include_n6 else (4,)
+            for n in sizes:
+                rows, finals, runs = run_s1_grid(n, max_layers, resume=resume)
+                all_rows.extend(rows)
+                all_runs.extend(runs)
+                all_final.update({(n, g): value for g, value in finals.items()})
+
+        _write_csv(TABLES_DIR / "s1_results.csv", all_rows)
+        _save_diagnostics(all_runs)
+        final4 = {g: all_final[(4, g)] for g in G_GRID}
+        noisy_rows = _noisy_s1(final4)
+        _write_csv(TABLES_DIR / "s1_noisy.csv", noisy_rows)
+
+        resources = _phase2_resources(final4)
+        if include_n6:
+            resources.extend(_phase2_resources({g: all_final[(6, g)] for g in G_GRID}, n=6))
+        _write_csv(TABLES_DIR / "resources.csv", resources)
+
+        bell_rows = _bell_rows(d)
+        _write_csv(TABLES_DIR / "bell.csv", bell_rows)
+
     final4 = {g: all_final[(4, g)] for g in G_GRID}
-    noisy_rows = _noisy_s1(final4)
-    _write_csv(TABLES_DIR / "s1_noisy.csv", noisy_rows)
+    noisy_architecture_rows = _noisy_architecture_s1(final4)
+    seed_summary = _seed_summary_rows(all_rows, all_runs)
+    _write_csv(TABLES_DIR / "s1_seed_summary.csv", seed_summary)
+    _write_csv(TABLES_DIR / "s1_noisy_architectures.csv", noisy_architecture_rows)
 
-    resources = _phase2_resources(final4)
-    if include_n6:
-        resources.extend(_phase2_resources({g: all_final[(6, g)] for g in G_GRID}, n=6))
-    _write_csv(TABLES_DIR / "resources.csv", resources)
-
-    bell_rows = _bell_rows(d)
-    _write_csv(TABLES_DIR / "bell.csv", bell_rows)
     raw_parameters = {
         f"N{n}_g{g:.2f}": {
             "layers": record["layers"],
@@ -634,8 +932,11 @@ def generate_phase2_outputs(max_layers: int = DEFAULT_MAX_LAYERS, include_n6: bo
     (RAW_DIR / "phase2_s1_best_parameters.json").write_text(
         json.dumps(raw_parameters, indent=2, default=_to_json) + "\n", encoding="utf-8"
     )
-    _plot_outputs(all_rows, noisy_rows, resources, bell_rows, d)
-    _write_phase2_report(all_rows, noisy_rows, resources, bell_rows, include_n6, max_layers)
+    if not supplement_only:
+        _plot_outputs(all_rows, noisy_rows, resources, bell_rows, d)
+    _plot_noisy_architecture(noisy_architecture_rows)
+    _write_phase2_report(all_rows, noisy_rows, resources, bell_rows, include_n6, max_layers,
+                         seed_summary, noisy_architecture_rows)
     return {
         "n4_rows": sum(int(r["N"]) == 4 for r in all_rows),
         "n6_rows": sum(int(r["N"]) == 6 for r in all_rows),
@@ -679,8 +980,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--max-layers", type=int, default=DEFAULT_MAX_LAYERS)
     parser.add_argument("--include-n6", action="store_true", help="Run the optional six-qubit bonus tier")
+    parser.add_argument("--resume", action="store_true", help="Resume completed N=4/N=6 field-layer scans from checkpoints")
+    parser.add_argument("--n6-only", action="store_true", help="Keep checked-in N=4 results and run/resume only the optional N=6 tier")
+    parser.add_argument("--supplement-only", action="store_true", help="Regenerate seed and supplementary A/B/D noisy outputs from saved VQE runs")
     args = parser.parse_args()
-    summary = generate_phase2_outputs(max_layers=args.max_layers, include_n6=args.include_n6)
+    summary = generate_phase2_outputs(
+        max_layers=args.max_layers,
+        include_n6=args.include_n6,
+        resume=args.resume,
+        n6_only=args.n6_only,
+        supplement_only=args.supplement_only,
+    )
     print(json.dumps(summary, indent=2))
 
 

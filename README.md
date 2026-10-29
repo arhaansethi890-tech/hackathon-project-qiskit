@@ -24,10 +24,22 @@ python scripts/run_phase2_s1.py
 The optional N=6 bonus tier is available with:
 
 ```bash
-python scripts/run_phase2_s1.py --include-n6
+python scripts/run_phase2_s1.py --include-n6 --resume
 ```
 
-The full recomputation may take longer than 30 minutes on a laptop. The notebook's `RECOMPUTE = False` path uses the saved results; all seeds, inputs, and commands are recorded so the run can be reproduced.
+The layer scan checkpoints after each completed field/layer. Continue an interrupted N=4 or combined run with `--resume`; to spend the remaining compute only on N=6 while keeping the checked-in N=4 results, use:
+
+```bash
+python scripts/run_phase2_s1.py --n6-only --resume
+```
+
+Regenerate the seed summary and the supplementary noisy A/B/D comparison from saved VQE results without repeating the optimizer search with:
+
+```bash
+python scripts/run_phase2_s1.py --supplement-only
+```
+
+The full recomputation may take longer than 30 minutes on a laptop. The notebook's `RECOMPUTE = False` path uses the saved results; all seeds, inputs, checkpoints, and commands are recorded so the run can be reproduced.
 
 ## Phase 2 scope
 
@@ -46,7 +58,7 @@ The official `qff_sim.py` helper is included unchanged. It supplies the locked A
 python tools/check_processor_d.py processors/processor_D.json 6
 ```
 
-Phase 2 result tables are in `results/tables/`: `bell.csv`, `resources.csv`, `s1_results.csv`, and `s1_noisy.csv`. Figures and the Processor D graph are in `results/figures/`. The complete input conventions and scoring checklist are summarized in `docs/PHASE2_SPEC.md`; the previous Phase 1 notebook, report, README, and dependency pins are retained as archives.
+Phase 2 result tables are in `results/tables/`: `bell.csv`, `resources.csv`, `s1_results.csv`, `s1_noisy.csv`, and (after the supplement command) `s1_seed_summary.csv` plus `s1_noisy_architectures.csv`. Figures and the Processor D graph are in `results/figures/`. The complete input conventions and scoring checklist are summarized in `docs/PHASE2_SPEC.md`; the judge-facing walkthrough is in `DEMO_GUIDE.md`; the previous Phase 1 notebook, report, README, and dependency pins are retained as archives.
 
 The file-by-file comparison with the previous public export is recorded in `CHANGE_AUDIT_REPORT.md`.
 

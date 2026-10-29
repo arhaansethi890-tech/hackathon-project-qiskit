@@ -11,6 +11,13 @@ permissions:
 jobs:
   python-core:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      JUPYTER_CONFIG_DIR: ${{ runner.temp }}/jupyter/config
+      JUPYTER_DATA_DIR: ${{ runner.temp }}/jupyter/data
+      JUPYTER_RUNTIME_DIR: ${{ runner.temp }}/jupyter/runtime
+      JUPYTER_PATH: ${{ runner.temp }}/jupyter/prefix/share/jupyter
+      IPYTHONDIR: ${{ runner.temp }}/ipython
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,5 +30,11 @@ jobs:
         run: python -m pip check
       - name: Validate Processor D
         run: python tools/check_processor_d.py processors/processor_D.json 6
+      - name: Regenerate seed and noisy architecture supplements from saved runs
+        run: python scripts/run_phase2_s1.py --supplement-only
+      - name: Prepare isolated notebook kernel
+        run: |
+          mkdir -p "$JUPYTER_CONFIG_DIR" "$JUPYTER_DATA_DIR" "$JUPYTER_RUNTIME_DIR" "$IPYTHONDIR"
+          python -m ipykernel install --prefix "$RUNNER_TEMP/jupyter/prefix" --name phase2-ci --display-name "Python (Phase 2 CI)"
       - name: Execute Phase 2 notebook from saved result tables
-        run: python -m nbconvert --to notebook --execute main.ipynb --output phase2-ci.ipynb --ExecutePreprocessor.timeout=1800 --ExecutePreprocessor.kernel_name=python3
+        run: python -m nbconvert --to notebook --execute main.ipynb --output phase2-ci.ipynb --ExecutePreprocessor.timeout=1500 --ExecutePreprocessor.kernel_name=phase2-ci

@@ -51,6 +51,21 @@ The prior versions of the README, notebook, report, dependency pins, and experim
 - A fresh-kernel notebook execution was attempted but did not complete in this local environment. Jupyter initially lacked permission to write to its default Windows profile folder; after redirecting Jupyter data and temporary paths into the workspace, the conversion still did not return. This audit does not claim that notebook execution was verified.
 - No `pytest` suite was run. No public repository was created, and no portal submission was made by this workflow.
 
+## Follow-up improvements for Phase 2 presentation and longer runs
+
+The following follow-up changes were added after the initial audit:
+
+| Area | New change |
+| --- | --- |
+| Long VQE scans | Added atomic per-field checkpoints after each complete HVA layer, with metadata validation and `--resume` support. An interrupted layer is safely repeated rather than treated as complete. |
+| Optional N=6 tier | Added `--n6-only --resume`, which reuses the checked-in N=4 tables and saved optimizer records and spends new optimization time only on N=6. |
+| Seed transparency | Added `results/tables/s1_seed_summary.csv` and a matching 21-row report table showing all three official seeds at the selected N=4 layer, including error, tolerance outcome, and optimizer calls. |
+| Supplementary architecture noise study | Added `--supplement-only` to restore saved VQE states and compute the same-parameter A/B/D noisy density-matrix comparison at the three required fields, plus its CSV and figure. This is kept separate from the required D-only table. The local Windows Python is 3.10 and has no Qiskit installation, so the new A/B/D simulation table and figure were not generated in this environment; the pinned Python 3.11–3.13 environment is required. |
+| Notebook and CI | Added optional seed/supplement displays and explicit resume/N=6/supplement controls to the notebook. CI now uses isolated Jupyter directories and a named kernel, then generates the supplemental comparison from saved runs before executing the notebook. |
+| Judge preparation | Added `DEMO_GUIDE.md` with a timed three-minute walkthrough, accurate claim language, and likely judge questions. |
+
+The initial audit statement above that no public repository had been created describes the state at the time of that audit. The project was subsequently published to `https://github.com/arhaansethi890-tech/hackathon-project-qiskit`; the follow-up changes are intended for that repository. The initial audit and this follow-up do not claim a portal submission or a hardware run.
+
 ## Submission location
 
 The Phase 2 files were copied into the project folder named by the team: `C:\Users\arhaa\Downloads\hackathon project qiskit\hackathon project qiskit`. The clean prepared copy is under the Codex task's `outputs/phase2_submission` directory.
