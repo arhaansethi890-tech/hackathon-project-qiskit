@@ -12,14 +12,16 @@ jobs:
   python-core:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      JUPYTER_CONFIG_DIR: ${{ runner.temp }}/jupyter/config
-      JUPYTER_DATA_DIR: ${{ runner.temp }}/jupyter/data
-      JUPYTER_RUNTIME_DIR: ${{ runner.temp }}/jupyter/runtime
-      JUPYTER_PATH: ${{ runner.temp }}/jupyter/prefix/share/jupyter
-      IPYTHONDIR: ${{ runner.temp }}/ipython
     steps:
       - uses: actions/checkout@v4
+      - name: Configure isolated Jupyter directories
+        run: |
+          echo "JUPYTER_CONFIG_DIR=$RUNNER_TEMP/jupyter/config" >> "$GITHUB_ENV"
+          echo "JUPYTER_DATA_DIR=$RUNNER_TEMP/jupyter/data" >> "$GITHUB_ENV"
+          echo "JUPYTER_RUNTIME_DIR=$RUNNER_TEMP/jupyter/runtime" >> "$GITHUB_ENV"
+          echo "JUPYTER_PATH=$RUNNER_TEMP/jupyter/prefix/share/jupyter" >> "$GITHUB_ENV"
+          echo "IPYTHONDIR=$RUNNER_TEMP/ipython" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/jupyter/config" "$RUNNER_TEMP/jupyter/data" "$RUNNER_TEMP/jupyter/runtime" "$RUNNER_TEMP/ipython"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -34,7 +36,6 @@ jobs:
         run: python scripts/run_phase2_s1.py --supplement-only
       - name: Prepare isolated notebook kernel
         run: |
-          mkdir -p "$JUPYTER_CONFIG_DIR" "$JUPYTER_DATA_DIR" "$JUPYTER_RUNTIME_DIR" "$IPYTHONDIR"
           python -m ipykernel install --prefix "$RUNNER_TEMP/jupyter/prefix" --name phase2-ci --display-name "Python (Phase 2 CI)"
       - name: Execute Phase 2 notebook from saved result tables
         run: python -m nbconvert --to notebook --execute main.ipynb --output phase2-ci.ipynb --ExecutePreprocessor.timeout=1500 --ExecutePreprocessor.kernel_name=phase2-ci
