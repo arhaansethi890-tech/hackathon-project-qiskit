@@ -39,3 +39,14 @@ jobs:
           python -m ipykernel install --prefix "$RUNNER_TEMP/jupyter/prefix" --name phase2-ci --display-name "Python (Phase 2 CI)"
       - name: Execute Phase 2 notebook from saved result tables
         run: python -m nbconvert --to notebook --execute main.ipynb --output phase2-ci.ipynb --ExecutePreprocessor.timeout=1500 --ExecutePreprocessor.kernel_name=phase2-ci
+      - name: Publish generated Phase 2 supplements
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase2-supplementary-results
+          path: |
+            results/tables/s1_noisy_architectures.csv
+            results/figures/phase2_s1_noisy_architectures.png
+            report.md
+            phase2-ci.ipynb
+          if-no-files-found: error
+          retention-days: 14
