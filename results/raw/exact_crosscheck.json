@@ -1,0 +1,116 @@
+[
+  {
+    "status": "CURRENT_OCTOBER_14_GUIDE_VERIFIED",
+    "N": 4,
+    "J": 1.0,
+    "g": 0.5,
+    "boundary": "open",
+    "dense_ground_energy": -3.427034088908081,
+    "sparse_ground_energy": -3.427034088908,
+    "qiskit_pauli_ground_energy": -3.4270340889080786,
+    "free_fermion_ground_energy": -3.4270340889080795,
+    "max_abs_spectrum_diff_dense_sparse": 0.0,
+    "max_abs_spectrum_diff_dense_pauli": 4.884981308350689e-15,
+    "max_abs_spectrum_diff_dense_free_fermion": 3.1086244689504383e-15,
+    "magnetization_z_sum": -4.218847493575595e-14,
+    "magnetization_x_sum_dense": 1.8405056090842509,
+    "magnetization_x_sum_free_fermion": 1.840505609084252,
+    "magnetization_x_per_site": 0.4601264022710627,
+    "mz_squared_over_n2": 0.8446023902713411,
+    "zz_bonds": [
+      0.818661952837956,
+      0.8694573786900409,
+      0.8186619528379557
+    ],
+    "z_sites": [
+      -1.0103029524088925e-14,
+      -1.0935696792557792e-14,
+      -1.1046719095020308e-14,
+      -1.0103029524088925e-14
+    ],
+    "x_sites": [
+      0.5457746352253037,
+      0.3744781693168216,
+      0.37447816931682176,
+      0.5457746352253039
+    ],
+    "ground_state_gap": 0.09478758774307705,
+    "ground_state_degeneracy_at_numerical_tol": 1
+  },
+  {
+    "status": "CURRENT_OCTOBER_14_GUIDE_VERIFIED",
+    "N": 4,
+    "J": 1.0,
+    "g": 1.0,
+    "boundary": "open",
+    "dense_ground_energy": -4.758770483143632,
+    "sparse_ground_energy": -4.758770483144,
+    "qiskit_pauli_ground_energy": -4.7587704831436355,
+    "free_fermion_ground_energy": -4.758770483143634,
+    "max_abs_spectrum_diff_dense_sparse": 0.0,
+    "max_abs_spectrum_diff_dense_pauli": 7.105427357601002e-15,
+    "max_abs_spectrum_diff_dense_free_fermion": 5.329070518200751e-15,
+    "magnetization_z_sum": -1.249000902703301e-16,
+    "magnetization_x_sum_dense": 3.240381941947371,
+    "magnetization_x_sum_free_fermion": 3.2403819419473727,
+    "magnetization_x_per_site": 0.8100954854868427,
+    "mz_squared_over_n2": 0.5535837526138063,
+    "zz_bonds": [
+      0.49481813264570573,
+      0.5287522759048481,
+      0.4948181326457056
+    ],
+    "z_sites": [
+      -5.551115123125783e-17,
+      8.326672684688674e-17,
+      5.551115123125783e-17,
+      -2.0816681711721685e-16
+    ],
+    "x_sites": [
+      0.8620856092381809,
+      0.7581053617355045,
+      0.7581053617355045,
+      0.8620856092381809
+    ],
+    "ground_state_gap": 0.6945927106677177,
+    "ground_state_degeneracy_at_numerical_tol": 1
+  },
+  {
+    "status": "CURRENT_OCTOBER_14_GUIDE_VERIFIED",
+    "N": 4,
+    "J": 1.0,
+    "g": 1.5,
+    "boundary": "open",
+    "dense_ground_energy": -6.503891557126414,
+    "sparse_ground_energy": -6.503891557126,
+    "qiskit_pauli_ground_energy": -6.5038915571264075,
+    "free_fermion_ground_energy": -6.503891557126412,
+    "max_abs_spectrum_diff_dense_sparse": 0.0,
+    "max_abs_spectrum_diff_dense_pauli": 6.217248937900877e-15,
+    "max_abs_spectrum_diff_dense_free_fermion": 3.552713678800501e-15,
+    "magnetization_z_sum": 4.0245584642661925e-16,
+    "magnetization_x_sum_dense": 3.660108088383102,
+    "magnetization_x_sum_free_fermion": 3.660108088383106,
+    "magnetization_x_per_site": 0.9150270220957755,
+    "mz_squared_over_n2": 0.4275200053693503,
+    "zz_bonds": [
+      0.3331580797912638,
+      0.34741326496922187,
+      0.3331580797912638
+    ],
+    "z_sites": [
+      0.0,
+      8.326672684688674e-17,
+      2.3592239273284576e-16,
+      8.326672684688674e-17
+    ],
+    "x_sites": [
+      0.941297953000501,
+      0.8887560911910498,
+      0.8887560911910499,
+      0.941297953000501
+    ],
+    "ground_state_gap": 1.5664164432320158,
+    "ground_state_degeneracy_at_numerical_tol": 1
+  }
+]

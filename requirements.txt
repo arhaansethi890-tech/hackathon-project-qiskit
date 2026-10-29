@@ -1,0 +1,10 @@
+# QFF2026 Phase 2 - Quantum Simulation track. Tested on Python 3.11, 3.12, 3.13.
+# Use a dedicated virtual environment for this track.
+qiskit==1.4.6
+qiskit-aer==0.18.0
+numpy==2.4.6
+scipy==1.17.1
+matplotlib==3.11.2
+notebook==7.6.3
+nbconvert==7.17.2
+ipykernel==7.4.0

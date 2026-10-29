@@ -1,0 +1,228 @@
+{
+ "_note": "QFF2026 Phase 2 Quantum Simulation - LOCKED official instances. Model: TFIM H = -J sum_i Z_i Z_{i+1} - g sum_i X_i, J = 1. Qiskit label order (qubit 0 right-most).",
+ "PS-S1": {
+  "boundary": "open chain",
+  "N_required": 4,
+  "N_optional_tier": 6,
+  "g_grid": [
+   0.25,
+   0.5,
+   0.75,
+   1.0,
+   1.25,
+   1.5,
+   2.0
+  ],
+  "files": "data/s1/tfim_open_N<N>_g<g with 2 decimals>.json",
+  "method": "VQE only (QPE not used)",
+  "recommended_ansatz": "hva_ansatz (Hamiltonian Variational Ansatz)",
+  "initialization_seeds": [
+   0,
+   1,
+   2
+  ],
+  "energy_tolerance": 0.001
+ },
+ "PS-S2": {
+  "boundary": "open chain",
+  "N": 4,
+  "g": 1.0,
+  "file": "data/s2/tfim_open_N4_g1.00.json",
+  "initial_state": "Neel, Z_i = (-1)^i, label '1010'",
+  "times": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0,
+   1.25,
+   1.5,
+   1.75,
+   2.0,
+   2.25,
+   2.5,
+   2.75,
+   3.0,
+   3.25,
+   3.5,
+   3.75,
+   4.0
+  ],
+  "curve_steps": [
+   1,
+   2,
+   4,
+   8
+  ],
+  "loglog_T": 4.0,
+  "loglog_steps": [
+   1,
+   2,
+   4,
+   8,
+   16,
+   32,
+   64,
+   128
+  ],
+  "slope_fit": "least squares on the last 4 points (16, 32, 64, 128 steps)",
+  "trotter_order1": "U1(dt) = exp(-i H_X dt) exp(-i H_ZZ dt): ZZ layer first, then X layer",
+  "trotter_order2": "U2(dt) = exp(-i H_X dt/2) exp(-i H_ZZ dt) exp(-i H_X dt/2)",
+  "bond_order": "even bonds (0,1),(2,3) then odd bonds (1,2)"
+ },
+ "PS-S3": {
+  "boundary": "ring (periodic)",
+  "N": 4,
+  "g": 1.0,
+  "file": "data/s3/tfim_ring_N4_g1.00.json",
+  "initial_state": "Neel, label '1010'",
+  "T": 2.0,
+  "steps": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   10,
+   12,
+   14,
+   16
+  ],
+  "trotter_order": 1,
+  "noise_scales": [
+   0.5,
+   1.0,
+   2.0
+  ],
+  "shots": 4096,
+  "bond_order": "even bonds (0,1),(2,3) then odd bonds (1,2),(3,0)"
+ },
+ "benchmark_settings": {
+  "basis_gates": [
+   "rz",
+   "sx",
+   "x",
+   "cx"
+  ],
+  "optimization_level": 1,
+  "seed_transpiler": 42,
+  "seed_simulator": 42,
+  "noise": {
+   "p1_depolarizing": 0.001,
+   "p2_depolarizing": 0.005,
+   "readout_bitflip": 0.01
+  },
+  "bell_shots": 4096,
+  "z_measurement_shots": 4096
+ },
+ "processors": {
+  "A": {
+   "num_qubits": 5,
+   "edges": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     3,
+     4
+    ]
+   ]
+  },
+  "B": {
+   "num_qubits": 9,
+   "edges": [
+    [
+     0,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     6
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     6
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     6,
+     7
+    ],
+    [
+     6,
+     8
+    ],
+    [
+     8,
+     0
+    ]
+   ]
+  },
+  "D_limits": {
+   "max_qubits": 12,
+   "max_degree": 4,
+   "connected": true,
+   "basis_gates_allowed": [
+    [
+     "rz",
+     "sx",
+     "x",
+     "cx"
+    ],
+    [
+     "rz",
+     "sx",
+     "x",
+     "cz"
+    ],
+    [
+     "rz",
+     "sx",
+     "x",
+     "rzz"
+    ]
+   ],
+   "error_rates_not_better_than": {
+    "p1": 0.001,
+    "p2": 0.005,
+    "p_readout": 0.01
+   },
+   "justification_min_words": 40
+  }
+ }
+}

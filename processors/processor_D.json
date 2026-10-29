@@ -1,0 +1,24 @@
+{
+  "name": "Processor D - cycle with opposite couplers",
+  "team": "Chicken Leg Piece",
+  "problem_statement": "PS-S1",
+  "num_qubits": 6,
+  "edges": [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 0],
+    [0, 3],
+    [1, 4],
+    [2, 5]
+  ],
+  "basis_gates": ["rz", "sx", "x", "rzz"],
+  "error_rates": {
+    "p1": 0.001,
+    "p2": 0.005,
+    "p_readout": 0.01
+  },
+  "justification": "The Phase 1 ring-ansatz study measured five routing SWAPs on Processor A and none on B. For Phase 2 PS-S1, the HVA ZZ terms compiled in the CX-only A/B basis require two CX gates per logical ZZ rotation. D retains the measured four-qubit cycle, supports the optional N=6 open chain, and uses native RZZ so each HVA ZZ rotation is one two-qubit gate without routing. We assign RZZ the official CX error rate, not a better one. The nine-coupler design costs more calibration and may expose crosstalk that this depolarizing model omits."
+}

@@ -1,0 +1,13 @@
+pattern,g,difference,n_pairs,mean,sample_sd,sem,definition
+path,0.5,A_minus_B,3,-0.01180013020833333,0.03898332837776021,0.02250703513280744,sampled A energy minus sampled B energy matched by field and VQE seed
+path,1.0,A_minus_B,3,-0.0078125,0.09359091931171691,0.05403474245832431,sampled A energy minus sampled B energy matched by field and VQE seed
+path,1.5,A_minus_B,3,-0.01814778645833333,0.09607401492702172,0.05546835838024412,sampled A energy minus sampled B energy matched by field and VQE seed
+path,all,A_minus_B,9,-0.01258680555555556,0.06998335954635819,0.02332778651545273,sampled A energy minus sampled B energy matched by field and VQE seed
+ring,0.5,A_minus_B,3,0.1796061197916667,0.01240641209314698,0.00716284536165584,sampled A energy minus sampled B energy matched by field and VQE seed
+ring,1.0,A_minus_B,3,0.2688802083333333,0.09275587484530931,0.05355262931085857,sampled A energy minus sampled B energy matched by field and VQE seed
+ring,1.5,A_minus_B,3,0.4058430989583333,0.1110746833903794,0.06412899835558801,sampled A energy minus sampled B energy matched by field and VQE seed
+ring,all,A_minus_B,9,0.2847764756944444,0.1225266197480129,0.04084220658267098,sampled A energy minus sampled B energy matched by field and VQE seed
+star,0.5,A_minus_B,3,-0.005859375,0.03918514073036918,0.02262355154891202,sampled A energy minus sampled B energy matched by field and VQE seed
+star,1.0,A_minus_B,3,0.01546223958333333,0.04052832422257753,0.02339903889970957,sampled A energy minus sampled B energy matched by field and VQE seed
+star,1.5,A_minus_B,3,0.002766927083333333,0.0273963785056829,0.0158173065050769,sampled A energy minus sampled B energy matched by field and VQE seed
+star,all,A_minus_B,9,0.004123263888888889,0.03268669271029397,0.01089556423676466,sampled A energy minus sampled B energy matched by field and VQE seed

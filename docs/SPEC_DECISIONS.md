@@ -1,0 +1,10 @@
+# Specification decisions and boundaries
+
+- **Governing document:** October 14, 2026 Qiskit Fall Fest Phase 1 Master Challenge Guide. Its page 5 defines the S1 open four-site TFIM and field values. The Hamiltonian is confirmed; only the guide's magnetization-axis/normalization wording is genuinely ambiguous.
+- **A/B graph scope:** Page 2 gives A (5 nodes) and B (9 nodes) reference graphs and permits valid participant-designed graphs. This work freezes those exact references. They are not claimed as hardware maps/calibrations.
+- **Compiler/noise/shots:** Follow the guide's basis, level, noise assumptions, and shot count as transcribed in the two processor JSON files and the data dictionary. The same noise assumptions and independent measurement seeds are used for both architectures.
+- **Canonical solver:** Three repetitions / 16 parameters are explicit in the core workflow. `make_ansatz` retains its historical default of two repetitions. Exact ground energies are used for evaluation, never as an optimization target. Optimizer success, project tolerance, and physical/semantic checks remain separate.
+- **Failure handling:** The original seed-42, g=1.5 iteration-limit failure remains in the canonical nine-start data. A separately labelled restart is stored in its own diagnostic output and is not substituted.
+- **No post-hoc architecture tuning:** Primary maps, transpiler settings, and core starts are fixed before the supplementary E4 study. E4 uses real frozen A/B graphs, is kept out of the default workflow, and cannot change primary results.
+- **Source limitations:** The supplied ZIP and `Problem_Statment_Details.pdf` are missing. The October 14 guide is present and governs; no ZIP extraction/checksum comparison is claimed. The private handoff records the source audit.
+- **No unverified claims:** No hardware, portal, submission, publication, organizer contact, AI-policy compliance, contributor approval, or license is asserted. The absent AI policy and all-member license approval remain manual checks.

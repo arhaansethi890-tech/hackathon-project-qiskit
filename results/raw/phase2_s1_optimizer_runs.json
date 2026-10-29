@@ -1,0 +1,1250 @@
+[
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 1,
+    "seed": 0,
+    "energy": -2.3127730130957254,
+    "parameters": [
+      0.7565815065177743,
+      -2.356194482612663
+    ],
+    "calls": 27,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 1,
+    "seed": 1,
+    "energy": -2.31277301309572,
+    "parameters": [
+      -0.7565815441443241,
+      2.3561944645362876
+    ],
+    "calls": 33,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 1,
+    "seed": 2,
+    "energy": -2.3127730130957227,
+    "parameters": [
+      -0.756581519701061,
+      -0.7853981402923412
+    ],
+    "calls": 27,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 2,
+    "seed": 0,
+    "energy": -2.595887746371468,
+    "parameters": [
+      1.4272701922191082,
+      -2.3351810932646138,
+      -2.7744207591201318,
+      -3.842549209245959
+    ],
+    "calls": 105,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 2,
+    "seed": 1,
+    "energy": -2.5958877463714622,
+    "parameters": [
+      1.4272702169530362,
+      3.9480041774799166,
+      -2.7744207531228287,
+      2.4406360495966366
+    ],
+    "calls": 115,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 2,
+    "seed": 2,
+    "energy": -2.7657644976436386,
+    "parameters": [
+      -0.7631793857718737,
+      -1.3162972386203624,
+      1.963433664024874,
+      -3.7724818184019906
+    ],
+    "calls": 160,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 3,
+    "seed": 0,
+    "energy": -2.8390403231499652,
+    "parameters": [
+      0.9337086398736827,
+      -2.604502593384219,
+      -2.360501026653291,
+      -1.9904591972958656,
+      2.694786558553549,
+      3.8024877811154316
+    ],
+    "calls": 252,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 3,
+    "seed": 1,
+    "energy": -2.9089949450419508,
+    "parameters": [
+      -2.117663453654566,
+      4.238777620217171,
+      -3.0384591629335884,
+      0.6888616598993863,
+      0.5538069887255543,
+      1.9892043048948764
+    ],
+    "calls": 315,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 3,
+    "seed": 2,
+    "energy": -2.908994945041833,
+    "parameters": [
+      -2.1176634524988827,
+      -2.0444073646754264,
+      3.2447258087919466,
+      -2.4527309546434672,
+      0.553806917249992,
+      1.9892043332829783
+    ],
+    "calls": 182,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 4,
+    "seed": 0,
+    "energy": -3.0978888824305306,
+    "parameters": [
+      1.5617055509106703,
+      -3.986782393242944,
+      -1.0421942978615513,
+      -2.1537043301545036,
+      2.2848394206298086,
+      2.746870288321319,
+      1.1466467998163785,
+      1.3904767965939706
+    ],
+    "calls": 630,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 4,
+    "seed": 1,
+    "energy": -3.082845161235182,
+    "parameters": [
+      1.6799737872528213,
+      1.1301433169959354,
+      -2.110576806960015,
+      1.3893296586160855,
+      -1.5255682316593029,
+      -0.835460809676236,
+      1.4328854025757967,
+      -1.6737961257530307
+    ],
+    "calls": 423,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.25,
+    "layers": 4,
+    "seed": 2,
+    "energy": -3.0828451612350363,
+    "parameters": [
+      -1.6799734251866767,
+      -1.130145055845468,
+      2.110577946029215,
+      -1.3893301843387262,
+      1.5255689109647919,
+      0.8354606360277096,
+      -1.4328855408563503,
+      -1.4677970749665405
+    ],
+    "calls": 369,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 1,
+    "seed": 0,
+    "energy": -3.003439872602931,
+    "parameters": [
+      0.6091386595874038,
+      -2.356194497760673
+    ],
+    "calls": 24,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 1,
+    "seed": 1,
+    "energy": -3.003439872602928,
+    "parameters": [
+      -0.6091386659432765,
+      2.3561944701903212
+    ],
+    "calls": 39,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 1,
+    "seed": 2,
+    "energy": -3.003439872602924,
+    "parameters": [
+      -0.6091386606252241,
+      -0.7853982002313867
+    ],
+    "calls": 27,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 2,
+    "seed": 0,
+    "energy": -3.1562019966476185,
+    "parameters": [
+      1.441312194776826,
+      -2.133892290003324,
+      -2.9025443877799404,
+      -3.8456168438277465
+    ],
+    "calls": 120,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 2,
+    "seed": 1,
+    "energy": -3.1562019966475443,
+    "parameters": [
+      1.441312886891128,
+      4.149292298762333,
+      -2.9025443721172444,
+      2.437568266095559
+    ],
+    "calls": 115,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 2,
+    "seed": 2,
+    "energy": -3.2696138802391967,
+    "parameters": [
+      -0.6304872233164585,
+      -1.0961181010740033,
+      1.910515214549822,
+      -3.7624648683197917
+    ],
+    "calls": 90,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 3,
+    "seed": 0,
+    "energy": -3.3200348944567395,
+    "parameters": [
+      0.9121980752276867,
+      -0.4414967884042309,
+      -4.888718859840501,
+      -0.7938173119845477,
+      2.12127823858063,
+      3.703193202412167
+    ],
+    "calls": 469,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 3,
+    "seed": 1,
+    "energy": -3.1745889387491535,
+    "parameters": [
+      -0.7017327972109207,
+      2.706126440213756,
+      -2.6214689488128484,
+      1.3084321562799965,
+      1.0552163464081743,
+      0.9430018670360382
+    ],
+    "calls": 308,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 3,
+    "seed": 2,
+    "energy": -3.332111827602684,
+    "parameters": [
+      -2.073768819001409,
+      -1.7723529758399579,
+      3.155066269978125,
+      -2.61313106708111,
+      0.4853763419125837,
+      2.0349082816562305
+    ],
+    "calls": 210,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 4,
+    "seed": 0,
+    "energy": -3.4270340889069333,
+    "parameters": [
+      1.5696707083474999,
+      -3.6258232034995297,
+      -1.375161036059021,
+      -2.2564139640266516,
+      2.515266632438543,
+      2.9443502282718503,
+      1.0049943996033839,
+      1.2831366967267233
+    ],
+    "calls": 504,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 4,
+    "seed": 1,
+    "energy": -3.340607990060342,
+    "parameters": [
+      0.7748306106520624,
+      1.0085709819027826,
+      -1.7192061317957026,
+      1.3655356598700843,
+      -2.1982344105305693,
+      -0.6938944535924109,
+      0.30530440744945053,
+      -1.8935568615985126
+    ],
+    "calls": 585,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.5,
+    "layers": 4,
+    "seed": 2,
+    "energy": -3.340607990057345,
+    "parameters": [
+      -0.7748313284518339,
+      -1.0085729256674467,
+      1.719210008687704,
+      -1.3655373311365315,
+      2.1982360618181875,
+      0.6938923825482612,
+      -0.3053055530224605,
+      -1.2480339223327006
+    ],
+    "calls": 513,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 1,
+    "seed": 0,
+    "energy": -3.7925366252033483,
+    "parameters": [
+      0.49658617391787974,
+      -2.356194472210841
+    ],
+    "calls": 24,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 1,
+    "seed": 1,
+    "energy": -3.792536625203348,
+    "parameters": [
+      -0.4965862028714882,
+      2.3561944681279328
+    ],
+    "calls": 36,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 1,
+    "seed": 2,
+    "energy": -3.792536625203346,
+    "parameters": [
+      -0.49658621944877973,
+      -0.7853981833209908
+    ],
+    "calls": 24,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 2,
+    "seed": 0,
+    "energy": -3.876502832747115,
+    "parameters": [
+      1.428956541133198,
+      -1.9713732630487137,
+      -2.9827463716516256,
+      -3.8464815407771447
+    ],
+    "calls": 150,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 2,
+    "seed": 1,
+    "energy": -3.944634231324199,
+    "parameters": [
+      0.514004763275295,
+      7.189337123931896,
+      -1.8705987816684897,
+      3.75211057257668
+    ],
+    "calls": 180,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 2,
+    "seed": 2,
+    "energy": -3.9446342313241924,
+    "parameters": [
+      -0.5140046630731361,
+      -0.9061516402105971,
+      1.870598873023381,
+      -3.752110534647795
+    ],
+    "calls": 165,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 3,
+    "seed": 0,
+    "energy": -3.964633588498155,
+    "parameters": [
+      0.7528175186955718,
+      -0.38310369011543516,
+      -5.126964724408261,
+      -0.7588896732766097,
+      2.2036308642662727,
+      3.69139829903878
+    ],
+    "calls": 539,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 3,
+    "seed": 1,
+    "energy": -3.9477215149174842,
+    "parameters": [
+      -0.5356226256864572,
+      2.871287599416272,
+      -3.7776645098901662,
+      1.8564127107250208,
+      0.1226297744685792,
+      -0.6071660518223312
+    ],
+    "calls": 504,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 3,
+    "seed": 2,
+    "energy": -3.9682968549729396,
+    "parameters": [
+      -1.974063936908575,
+      -1.5218115704973314,
+      2.972926961813937,
+      -2.755306936255752,
+      0.5451628508195603,
+      2.048973999467497
+    ],
+    "calls": 322,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 4,
+    "seed": 0,
+    "energy": -4.005815566685076,
+    "parameters": [
+      1.6494529341933248,
+      -3.344431078807328,
+      -1.6915424683070381,
+      -2.3938588482281813,
+      2.677285559681712,
+      3.073488528399561,
+      0.9949931002789887,
+      1.1975329049021215
+    ],
+    "calls": 675,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 4,
+    "seed": 1,
+    "energy": -3.9764230453572447,
+    "parameters": [
+      0.6902090375218338,
+      0.8363537824975311,
+      -1.6234110186904511,
+      1.3344710981092016,
+      -2.1015480763205914,
+      -0.6587850016595848,
+      0.2709016928433559,
+      -1.8656166509237837
+    ],
+    "calls": 666,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 0.75,
+    "layers": 4,
+    "seed": 2,
+    "energy": -4.005815566683982,
+    "parameters": [
+      -0.7481116873712509,
+      -0.6049810953573305,
+      3.2998345312407684,
+      -2.579990714749533,
+      1.3730369149220263,
+      2.674714520568155,
+      0.734162281035306,
+      -2.125683777670861
+    ],
+    "calls": 657,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 1,
+    "seed": 0,
+    "energy": -4.646248845547997,
+    "parameters": [
+      0.41279650096718384,
+      -2.356194509258917
+    ],
+    "calls": 30,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 1,
+    "seed": 1,
+    "energy": -4.646248845547995,
+    "parameters": [
+      -0.41279648429702326,
+      2.3561944568364486
+    ],
+    "calls": 45,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 1,
+    "seed": 2,
+    "energy": -4.646248845547987,
+    "parameters": [
+      -0.41279647012777765,
+      -0.7853982166222203
+    ],
+    "calls": 24,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 2,
+    "seed": 0,
+    "energy": -4.69498844915713,
+    "parameters": [
+      1.4023803791571503,
+      -1.841027111384597,
+      -3.0309112944918963,
+      -3.8474542228670803
+    ],
+    "calls": 165,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 2,
+    "seed": 1,
+    "energy": -4.694988449157195,
+    "parameters": [
+      1.402383726488172,
+      4.4421547534971735,
+      -3.030911267610251,
+      2.4357305335543904
+    ],
+    "calls": 155,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 2,
+    "seed": 2,
+    "energy": -4.73527451263535,
+    "parameters": [
+      -0.4232382811391683,
+      -0.7556308593946118,
+      1.843982240559698,
+      -3.7438985080463487
+    ],
+    "calls": 245,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 3,
+    "seed": 0,
+    "energy": -4.735304107808944,
+    "parameters": [
+      0.42404967998071025,
+      -2.425893265550831,
+      -3.100667566704382,
+      -1.8424327059479586,
+      3.14883197796581,
+      3.742427248248538
+    ],
+    "calls": 392,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 3,
+    "seed": 1,
+    "energy": -4.742292772636302,
+    "parameters": [
+      -0.3451597135245539,
+      5.175270048724596,
+      -5.879295974591985,
+      1.883577778933291,
+      0.2512049788902719,
+      -0.9800235195087074
+    ],
+    "calls": 483,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.0,
+    "layers": 3,
+    "seed": 2,
+    "energy": -4.758614452313845,
+    "parameters": [
+      -1.779899821430648,
+      -1.1845220822683222,
+      2.5622083844734203,
+      -2.7892458918692205,
+      2.071816969444228,
+      1.993535332479166
+    ],
+    "calls": 504,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 1,
+    "seed": 0,
+    "energy": -5.54160009938192,
+    "parameters": [
+      0.35013947242202526,
+      -2.356194530882189
+    ],
+    "calls": 33,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 1,
+    "seed": 1,
+    "energy": -5.5416000993819265,
+    "parameters": [
+      -0.35013949714264225,
+      2.3561945056482476
+    ],
+    "calls": 36,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 1,
+    "seed": 2,
+    "energy": -5.541600099381929,
+    "parameters": [
+      -0.3501395057137663,
+      -0.785398188575959
+    ],
+    "calls": 33,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 2,
+    "seed": 0,
+    "energy": -5.571669070255954,
+    "parameters": [
+      1.3698867106764288,
+      -1.7351613986048384,
+      -3.060523750303574,
+      -3.848788363861634
+    ],
+    "calls": 155,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 2,
+    "seed": 1,
+    "energy": -5.571669070255631,
+    "parameters": [
+      1.3698838095838044,
+      4.5480269431059765,
+      -3.0605236871311354,
+      2.434396873819355
+    ],
+    "calls": 145,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 2,
+    "seed": 2,
+    "energy": -5.5716690702563945,
+    "parameters": [
+      -1.369881554121458,
+      1.7351560773735986,
+      3.0605236762507393,
+      -2.4343977607163283
+    ],
+    "calls": 345,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 3,
+    "seed": 0,
+    "energy": -5.596298605808959,
+    "parameters": [
+      0.35696399555397285,
+      -2.5526683198838382,
+      -3.087709172132056,
+      -1.8234652879784243,
+      3.158019476154288,
+      3.735078553649588
+    ],
+    "calls": 511,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 3,
+    "seed": 1,
+    "energy": -5.59940210935303,
+    "parameters": [
+      -0.2854057890125536,
+      5.317932736547932,
+      -5.907201106444578,
+      1.8713334744137962,
+      0.21589452823002364,
+      -0.9580950516094812
+    ],
+    "calls": 539,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 3,
+    "seed": 2,
+    "energy": -5.604778518868514,
+    "parameters": [
+      -1.8274247936029084,
+      -1.2065829948687326,
+      2.686486630490226,
+      -2.9069960048824353,
+      2.0687986860289436,
+      2.0795042046323218
+    ],
+    "calls": 581,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 4,
+    "seed": 0,
+    "energy": -5.60598575396594,
+    "parameters": [
+      2.5341879138133545,
+      -2.4486699095142335,
+      -2.7614947562361554,
+      -3.0669764623089963,
+      0.34326766128537084,
+      4.711912952018093,
+      -0.5233587689956141,
+      0.8734794343968475
+    ],
+    "calls": 2529,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 4,
+    "seed": 1,
+    "energy": -5.605985753947682,
+    "parameters": [
+      1.8991021289020185,
+      0.9345773016665926,
+      -5.208970034738885,
+      2.720361205385936,
+      -0.34658836894389633,
+      -2.380041551584759,
+      0.0613838375527709,
+      -2.016955334958065
+    ],
+    "calls": 3330,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.25,
+    "layers": 4,
+    "seed": 2,
+    "energy": -5.605985753968481,
+    "parameters": [
+      -0.44492181227150385,
+      -0.35531185428423895,
+      3.098659603908146,
+      -2.765960184110686,
+      1.613069440149088,
+      2.475651343438605,
+      0.6252177424093769,
+      -2.257655227976007
+    ],
+    "calls": 684,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 1,
+    "seed": 0,
+    "energy": -6.464206964575749,
+    "parameters": [
+      0.3024604580217939,
+      -2.3561944899025304
+    ],
+    "calls": 42,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 1,
+    "seed": 1,
+    "energy": -6.464206964575742,
+    "parameters": [
+      -0.3024604400581182,
+      2.3561944471453082
+    ],
+    "calls": 39,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 1,
+    "seed": 2,
+    "energy": -6.464206964575748,
+    "parameters": [
+      -0.30246045882511924,
+      -0.7853981620567378
+    ],
+    "calls": 36,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 2,
+    "seed": 0,
+    "energy": -6.483814959265269,
+    "parameters": [
+      1.3359009256016519,
+      -1.6475470895047928,
+      -3.0795787028071713,
+      -3.8503655161175416
+    ],
+    "calls": 175,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 2,
+    "seed": 1,
+    "energy": -6.483814959265464,
+    "parameters": [
+      1.3359069518092053,
+      4.635632219587909,
+      -3.0795787861106274,
+      2.432818920452982
+    ],
+    "calls": 150,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 2,
+    "seed": 2,
+    "energy": -6.483814959265455,
+    "parameters": [
+      -1.3359009881520048,
+      1.6475470440062308,
+      3.079578684254552,
+      -2.4328197136614347
+    ],
+    "calls": 305,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 3,
+    "seed": 0,
+    "energy": -6.503568814830743,
+    "parameters": [
+      -1.6156752767716827,
+      -0.4358757243326706,
+      -4.512619607403293,
+      -2.753806835294204,
+      2.82602336223572,
+      5.10656092115693
+    ],
+    "calls": 1407,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 3,
+    "seed": 1,
+    "energy": -6.500958683841835,
+    "parameters": [
+      -0.24197347064082778,
+      5.433093059694293,
+      -5.936812135397454,
+      1.8628066218476163,
+      0.19259436138031114,
+      -0.9431202132892813
+    ],
+    "calls": 707,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 1.5,
+    "layers": 3,
+    "seed": 2,
+    "energy": -6.500009859965145,
+    "parameters": [
+      -1.3267152334629377,
+      -2.4046877401451243,
+      3.435270210150958,
+      -3.0293279873905963,
+      0.06796380033858133,
+      2.116106973888116
+    ],
+    "calls": 476,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 1,
+    "seed": 0,
+    "energy": -8.358929417210764,
+    "parameters": [
+      0.2359745082311435,
+      -2.3561945178730483
+    ],
+    "calls": 105,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 1,
+    "seed": 1,
+    "energy": -8.358929417210756,
+    "parameters": [
+      -0.2359745200916691,
+      2.3561945598754837
+    ],
+    "calls": 60,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 1,
+    "seed": 2,
+    "energy": -8.35892941721069,
+    "parameters": [
+      -0.23597450529141434,
+      -0.785397934800182
+    ],
+    "calls": 39,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 2,
+    "seed": 0,
+    "energy": -8.368462159782805,
+    "parameters": [
+      1.2708454256197346,
+      -1.5104904179346066,
+      -3.1014928649453304,
+      -3.853800631738965
+    ],
+    "calls": 240,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 2,
+    "seed": 1,
+    "energy": -8.368462159779796,
+    "parameters": [
+      1.2708756707792093,
+      4.772664161558362,
+      -3.101492892204089,
+      2.4293819813824244
+    ],
+    "calls": 180,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 2,
+    "seed": 2,
+    "energy": -8.374208519777666,
+    "parameters": [
+      -0.9150895441713517,
+      0.7022182487950408,
+      0.10711543560193112,
+      -1.0767050582871434
+    ],
+    "calls": 445,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 3,
+    "seed": 0,
+    "energy": -8.375724346359771,
+    "parameters": [
+      -1.0847733441554996,
+      -2.6682017876379813,
+      -2.7541721395105836,
+      0.0832005637638849,
+      3.1730400273587804,
+      5.257835523883352
+    ],
+    "calls": 567,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 3,
+    "seed": 1,
+    "energy": -8.376032466356493,
+    "parameters": [
+      -0.18443502121701502,
+      5.603328736797783,
+      -5.990996872114986,
+      1.8525049173315022,
+      0.16585754450486218,
+      -0.9252497169696038
+    ],
+    "calls": 952,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  },
+  {
+    "n": 4,
+    "g": 2.0,
+    "layers": 3,
+    "seed": 2,
+    "energy": -8.37668321336038,
+    "parameters": [
+      -1.3700077323570807,
+      -0.3089151907632616,
+      1.4716053330857535,
+      -2.832647855071108,
+      -0.22094738461269595,
+      1.969451095464357
+    ],
+    "calls": 798,
+    "optimizer_success": true,
+    "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+  }
+]

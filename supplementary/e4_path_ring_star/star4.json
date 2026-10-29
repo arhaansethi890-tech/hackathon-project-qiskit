@@ -1,0 +1,9 @@
+{
+  "name": "E4 Star4",
+  "architecture_id": "Star4",
+  "qubit_count": 4,
+  "edges": [[0,1],[0,2],[0,3]],
+  "coupling_map_bidirectional": true,
+  "basis_gates": ["rz","sx","x","cx"],
+  "scope": "Supplementary E4 team study only; not Processor A/B and not an organizer-required device."
+}

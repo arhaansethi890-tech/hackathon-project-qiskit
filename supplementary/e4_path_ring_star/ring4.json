@@ -1,0 +1,9 @@
+{
+  "name": "E4 Ring4",
+  "architecture_id": "Ring4",
+  "qubit_count": 4,
+  "edges": [[0,1],[1,2],[2,3],[3,0]],
+  "coupling_map_bidirectional": true,
+  "basis_gates": ["rz","sx","x","cx"],
+  "scope": "Supplementary E4 team study only; not Processor A/B and not an organizer-required device."
+}

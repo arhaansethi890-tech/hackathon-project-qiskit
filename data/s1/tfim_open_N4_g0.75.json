@@ -1,0 +1,42 @@
+{
+ "meta": {
+  "model": "TFIM H = -J sum_i Z_i Z_{i+1} - g sum_i X_i",
+  "boundary": "open chain",
+  "N": 4,
+  "J": 1.0,
+  "g": 0.75,
+  "E0_exact": -4.005815566686047,
+  "E1_exact": -3.670304885263233,
+  "label_order": "Qiskit: qubit 0 is the right-most character"
+ },
+ "operator": [
+  [
+   "IIZZ",
+   -1.0
+  ],
+  [
+   "IZZI",
+   -1.0
+  ],
+  [
+   "ZZII",
+   -1.0
+  ],
+  [
+   "IIIX",
+   -0.75
+  ],
+  [
+   "IIXI",
+   -0.75
+  ],
+  [
+   "IXII",
+   -0.75
+  ],
+  [
+   "XIII",
+   -0.75
+  ]
+ ]
+}

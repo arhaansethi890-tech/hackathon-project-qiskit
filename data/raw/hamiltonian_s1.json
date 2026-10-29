@@ -1,0 +1,12 @@
+{
+  "problem_id": "PS-S1",
+  "source": "Qiskit Fall Fest 2026 Phase 1 Master Challenge Guide, October 14 2026, page 5",
+  "n_sites": 4,
+  "boundary_condition": "open",
+  "coupling_J": 1.0,
+  "field_values_g": [0.5, 1.0, 1.5],
+  "hamiltonian": "H = -J * sum(i=0..2, Z_i Z_(i+1)) - g * sum(i=0..3, X_i)",
+  "basis_ordering_in_software": "site 0 is least-significant bit",
+  "magnetization_convention": "The guide requests magnetization but does not define axis or normalization. Reported Mz_per_site, Mx_per_site, and Mz2_normalized are explicit project conventions, not source-defined requirements.",
+  "notes": "The October 14 guide and independently cross-checked spectrum settle the Hamiltonian terms and boundary condition. This file records those terms; it does not reconstruct the absent Problem_Statment_Details.pdf."
+}

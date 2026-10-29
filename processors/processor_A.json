@@ -1,0 +1,62 @@
+{
+  "name": "Processor A_branch",
+  "processor_id": "A_branch",
+  "qubit_count": 5,
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      3,
+      4
+    ]
+  ],
+  "coupling_map_bidirectional": true,
+  "basis_gates": [
+    "rz",
+    "sx",
+    "x",
+    "cx"
+  ],
+  "topology_source": "October 14, 2026 QFF Phase 1 Master Guide p.2 lists this graph as a reference architecture and explicitly permits participant-designed alternatives; the graph was fixed before the supplementary ansatz-pattern study.",
+  "topology_status": "Guide reference graph; fixed before the supplementary ansatz-pattern study; not a hardware calibration.",
+  "noise_model": {
+    "single_qubit_depolarizing_p": 0.001,
+    "single_qubit_noisy_gates": [
+      "rz",
+      "sx",
+      "x"
+    ],
+    "rz_noiseless": false,
+    "cx_depolarizing_p": 0.005,
+    "readout_error_matrix": [
+      [
+        0.99,
+        0.01
+      ],
+      [
+        0.01,
+        0.99
+      ]
+    ],
+    "source": "October 14, 2026 Master Guide p.2 synthetic-noise model: p=0.001 per one-qubit gate, p=0.005 per CX, symmetric readout p=0.01.",
+    "status": "Same literal noise model for A/B; no hardware calibration claimed",
+    "project_rz_noiseless_sensitivity": {
+      "single_qubit_noisy_gates": [
+        "sx",
+        "x"
+      ],
+      "rz_noiseless": true,
+      "label": "Supplementary sensitivity only"
+    }
+  }
+}
