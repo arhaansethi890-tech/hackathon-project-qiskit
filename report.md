@@ -10,6 +10,14 @@ We reproduced the locked N=4 instances at all seven fields, used the HVA with se
 
 Minimum-layer outcomes: g=0.25: L=4, g=0.50: L=4, g=0.75: L=4, g=1.00: L=3, g=1.25: L=4, g=1.50: L=3, g=2.00: L=3.
 
+## Why the Ising model matters in real life
+
+The Ising model is a simplified way to describe interacting magnetic moments, or spins, in a material. In this transverse-field version, neighboring spins interact with each other while an external field pushes them toward a different orientation. Changing the field can change the material's magnetic behavior. Quantities such as magnetization and spin-to-spin correlation help describe those changes.
+
+Researchers use related spin models to study magnetism and quantum materials. Better simulations could help explain which magnetic patterns are stable and how a material responds when conditions change. Quantum algorithms such as VQE are being explored as a way to simulate strongly correlated quantum systems, although useful material studies require much larger and more realistic models than this one.
+
+This submission uses only a four-spin chain with synthetic processor noise. It demonstrates a reproducible way to estimate a small Ising ground state and compare circuit costs; it does not predict a specific material or demonstrate a hardware result. The Processor D comparison is about how efficiently this workload maps to a proposed processor design.
+
 ## Locked method and references
 
 The Phase 2 specification supersedes Phase 1 inputs: `H = -Σ ZᵢZᵢ₊₁ - gΣXᵢ`, open boundary, `J=1`. Each instance is loaded from `data/s1/`; exact E0 and E1 are checked against dense diagonalization. PS-S1 uses VQE only. Parameter initialization uses `numpy.random.default_rng(seed)` with a uniform draw in `(-π, π)` and the official seeds 0, 1, 2. Each layer has two shared HVA parameters. The layer search runs in increasing L and stops at the first L meeting the energy tolerance; all three seeds are run at each attempted layer. `optimizer_calls` in the CSV is the sum over those three starts.
