@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a111a" />
+    <title>QFF Quantum Lab</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="QFF Quantum Lab home">
+          <span class="brand-mark" aria-hidden="true">Q</span>
+          <span>QFF <b>QUANTUM LAB</b></span>
+        </a>
+        <div class="topbar-right">
+          <span class="local-tag"><span class="status-dot"></span> LOCAL AER SIMULATION</span>
+          <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">API docs <span aria-hidden="true">↗</span></a>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div>
+            <div class="eyebrow"><span></span> EXPERIMENT WORKBENCH</div>
+            <h1>Explore a quantum circuit.</h1>
+            <p>Configure a local simulation, run it through Qiskit Aer, and inspect the state, measurements, and circuit depth.</p>
+          </div>
+          <div class="hero-chip"><span class="chip-orbit">◉</span><span>PS-S1 · TFIM<br /><b>EXPLORATORY MODE</b></span></div>
+        </section>
+
+        <div class="dashboard-grid">
+          <aside class="panel controls-panel">
+            <div class="panel-heading">
+              <div><span class="section-kicker">01 / SETUP</span><h2>Experiment controls</h2></div>
+              <span class="settings-icon" aria-hidden="true">⚙</span>
+            </div>
+            <form id="simulation-form">
+              <label class="field-label" for="algorithm">Algorithm</label>
+              <select id="algorithm" name="algorithm">
+                <option value="hva-vqe">TFIM HVA · VQE</option>
+                <option value="random-ry">Random RY · CX circuit</option>
+              </select>
+              <p class="field-help" id="algorithm-help">Optimizes a shared-parameter HVA against the open-chain TFIM.</p>
+
+              <div class="field-row">
+                <label class="field-label" for="qubits">Qubits <span class="inline-value" id="qubits-value">4</span></label>
+                <span class="field-range">2—8</span>
+              </div>
+              <input id="qubits" type="range" min="2" max="8" step="1" value="4" />
+
+              <div class="field-row">
+                <label class="field-label" for="depth">Circuit layers <span class="inline-value" id="depth-value">3</span></label>
+                <span class="field-range">1—8</span>
+              </div>
+              <input id="depth" type="range" min="1" max="8" step="1" value="3" />
+
+              <div class="field-row label-with-help">
+                <label class="field-label" for="field">Transverse field <i>g</i></label>
+                <span class="field-range">0—4</span>
+              </div>
+              <input id="field" type="range" min="0" max="4" step="0.05" value="1" />
+              <div class="range-readout"><span>0</span><b id="field-value">1.00</b><span>4</span></div>
+
+              <label class="field-label" for="zz-mode">ZZ implementation</label>
+              <select id="zz-mode" name="zz-mode">
+                <option value="rzz">Native RZZ · compact</option>
+                <option value="cx">CX–RZ–CX · decomposed</option>
+              </select>
+              <p class="field-help">The choice changes the exploratory circuit only; the locked benchmark is unchanged.</p>
+
+              <div class="field-row label-with-help">
+                <label class="field-label" for="shots">Measurement shots</label>
+                <span class="field-range">256—8,192</span>
+              </div>
+              <input id="shots" type="range" min="256" max="8192" step="256" value="2048" />
+              <div class="range-readout"><span>256</span><b id="shots-value">2,048</b><span>8,192</span></div>
+
+              <label class="field-label" for="seed">Random seed</label>
+              <input class="number-input" id="seed" type="number" min="0" max="4294967295" step="1" value="42" />
+
+              <div class="noise-heading">
+                <div><span class="field-label">Synthetic noise</span><small>Applied in local Aer simulation</small></div>
+                <label class="switch" aria-label="Enable synthetic noise">
+                  <input id="noise-enabled" type="checkbox" checked />
+                  <span class="switch-track"></span>
+                </label>
+              </div>
+              <div class="noise-inputs" id="noise-inputs">
+                <label for="p1">1-qubit error <input id="p1" type="number" min="0" max="0.1" step="0.001" value="0.001" /></label>
+                <label for="p2">2-qubit error <input id="p2" type="number" min="0" max="0.25" step="0.001" value="0.005" /></label>
+                <label for="preadout">Readout flip <input id="preadout" type="number" min="0" max="0.25" step="0.001" value="0.01" /></label>
+              </div>
+
+              <button class="run-button" id="run-button" type="submit">
+                <span class="run-icon" aria-hidden="true">▶</span><span>Run simulation</span><span class="button-arrow" aria-hidden="true">→</span>
+              </button>
+              <p class="control-note">Statevector mode is limited to 8 qubits. No quantum hardware is accessed.</p>
+            </form>
+          </aside>
+
+          <section class="results-column" aria-live="polite">
+            <div class="result-status" id="result-status"><span class="status-dot"></span><span id="status-text">Checking local simulation engine…</span></div>
+
+            <div class="metric-grid">
+              <article class="metric-card accent-card">
+                <span class="metric-label">VARIATIONAL ENERGY</span>
+                <strong id="metric-energy">—</strong>
+                <span class="metric-caption">⟨H⟩ · ideal state</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">GROUND FIDELITY</span>
+                <strong id="metric-fidelity">—</strong>
+                <span class="metric-caption">Ideal state vs exact ground state</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">NOISY FIDELITY</span>
+                <strong id="metric-noisy-fidelity">—</strong>
+                <span class="metric-caption">Pre-measurement density matrix</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-label">COMPILED CIRCUIT</span>
+                <strong><span id="metric-depth">—</span><small> depth</small></strong>
+                <span class="metric-caption"><b id="metric-twoq">—</b> two-qubit gates</span>
+              </article>
+            </div>
+
+            <article class="panel observable-panel">
+              <div class="observable-heading"><span class="section-kicker">TFIM OBSERVABLES</span><span>Ideal state <i>·</i> noisy density matrix</span></div>
+              <div class="observable-grid">
+                <div><span>⟨m<sub>x</sub>⟩</span><strong id="observable-mx">—</strong><small id="observable-mx-noisy">—</small></div>
+                <div><span>C<sub>zz</sub><sup>nn</sup></span><strong id="observable-czz">—</strong><small id="observable-czz-noisy">—</small></div>
+                <div><span>⟨M<sub>z</sub><sup>2</sup>⟩ / N²</span><strong id="observable-mz2">—</strong><small id="observable-mz2-noisy">—</small></div>
+              </div>
+            </article>
+
+            <div class="charts-grid">
+              <article class="panel chart-panel distribution-panel">
+                <div class="panel-heading chart-heading">
+                  <div><span class="section-kicker">02 / MEASUREMENTS</span><h2>Output distribution</h2></div>
+                  <span class="chart-unit">PROBABILITY</span>
+                </div>
+                <p class="chart-subtitle" id="distribution-subtitle">Run a circuit to see its measured bitstrings.</p>
+                <div class="chart-wrap"><svg id="distribution-chart" role="img" aria-label="Measurement probability distribution"></svg></div>
+                <div class="chart-foot"><span><i class="legend-dot blue"></i> Measured probability</span><span id="shots-caption">— shots</span></div>
+              </article>
+
+              <article class="panel chart-panel convergence-panel">
+                <div class="panel-heading chart-heading">
+                  <div><span class="section-kicker">03 / OPTIMIZATION</span><h2>Energy convergence</h2></div>
+                  <span class="chart-unit">ENERGY</span>
+                </div>
+                <p class="chart-subtitle" id="convergence-subtitle">Optimizer progress appears here for HVA runs.</p>
+                <div class="chart-wrap"><svg id="convergence-chart" role="img" aria-label="Optimizer energy convergence"></svg></div>
+                <div class="chart-foot"><span><i class="legend-dot orange"></i> Energy by optimizer iteration</span><span id="optimizer-caption">— iterations</span></div>
+              </article>
+            </div>
+
+            <article class="panel circuit-panel">
+              <div class="panel-heading chart-heading">
+                <div><span class="section-kicker">04 / CIRCUIT INSPECTOR</span><h2>Circuit & export</h2></div>
+                <div class="export-actions">
+                  <button class="quiet-button" id="copy-qasm" type="button" disabled>Copy QASM</button>
+                  <button class="quiet-button" id="download-json" type="button" disabled>Export JSON</button>
+                </div>
+              </div>
+              <div class="circuit-meta" id="circuit-meta">Waiting for a simulation</div>
+              <pre class="circuit-view" id="circuit-view">Your transpiled Qiskit circuit will appear here.</pre>
+              <details class="qasm-details">
+                <summary>OpenQASM 3 source</summary>
+                <pre id="qasm-view">Run a simulation to generate the circuit export.</pre>
+              </details>
+              <details class="state-details">
+                <summary>Ideal statevector amplitudes</summary>
+                <pre id="statevector-view">Statevector output appears after a run.</pre>
+              </details>
+            </article>
+            <p class="results-disclaimer">Exploratory local simulation with synthetic noise. These results are separate from the locked QFF benchmark and are not hardware measurements.</p>
+          </section>
+        </div>
+      </main>
+      <footer><span>QFF 2026 · PS-S1 SIMULATION WORKBENCH</span><span>Built with Qiskit · Aer · FastAPI</span></footer>
+    </div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

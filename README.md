@@ -62,6 +62,17 @@ Phase 2 result tables are in `results/tables/`: `bell.csv`, `resources.csv`, `s1
 
 The file-by-file comparison with the previous public export is recorded in `CHANGE_AUDIT_REPORT.md`.
 
+## Local API and dashboard
+
+The optional local dashboard provides adjustable exploratory HVA and random-circuit runs, measurement distributions, optimizer history, statevector output, and circuit export. It does not change the locked Phase 2 benchmark settings.
+
+```bash
+python -m pip install -r requirements.txt
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+```
+
+Open `http://127.0.0.1:8000`. The API is documented at `http://127.0.0.1:8000/docs`; setup, request examples, response fields, and limits are in [`docs/API_DASHBOARD.md`](docs/API_DASHBOARD.md).
+
 ## Interpretation limits
 
 All processor runs are local Aer simulations with the official synthetic noise model; no required run uses quantum hardware. Processor comparisons are limited to the locked graphs, circuits, seeds, fields, and noise model. The reported standard errors describe shot uncertainty where applicable; they are not evidence of a hardware advantage.

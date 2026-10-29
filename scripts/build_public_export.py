@@ -12,7 +12,7 @@ FIXED=['README.md','report.md','AI_DISCLOSURE.md','requirements.txt','main.ipynb
 
 def selected_files():
     paths={ROOT/p for p in FIXED}
-    for pattern in ('docs/*.md','src/*.py','tests/*.py','scripts/reproduce.py','scripts/render_docs.py','scripts/cleanroom_reproduce.py','scripts/build_public_export.py','scripts/run_e4_ansatz_patterns.py','scripts/make_e4_figures.py','processors/*.json','data/raw/*.json','data/raw/*.md','data/processed/*.csv','data/processed/*.md','run_*.py','.github/workflows/*.yml','results/raw/*.json','results/tables/*.csv','results/figures/*.png','results/supplementary/raw/*.json','results/supplementary/tables/*.csv','results/supplementary/figures/*.png'):
+    for pattern in ('docs/*.md','src/*.py','api/*.py','dashboard/*','tests/*.py','scripts/reproduce.py','scripts/reproduce_phase1_archive.py','scripts/run_phase2_s1.py','scripts/render_docs.py','scripts/cleanroom_reproduce.py','scripts/build_public_export.py','scripts/run_e4_ansatz_patterns.py','scripts/make_e4_figures.py','processors/*.json','data/raw/*.json','data/raw/*.md','data/processed/*.csv','data/processed/*.md','run_*.py','.github/workflows/*.yml','results/raw/*.json','results/tables/*.csv','results/figures/*.png','results/supplementary/raw/*.json','results/supplementary/tables/*.csv','results/supplementary/figures/*.png'):
         paths.update(ROOT.glob(pattern))
     # Historical E4 inputs are included only as the three tiny topology definitions.
     paths.update((ROOT/'supplementary/e4_path_ring_star'/f'{n}.json') for n in ('path4','ring4','star4'))

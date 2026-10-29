@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
+import importlib.metadata
 import json
 import math
 import sys
@@ -199,6 +201,42 @@ def _checkpoint_path(n: int, g: float) -> Path:
     return CHECKPOINT_DIR / f"N{n}_g{g:.2f}.json"
 
 
+def _checkpoint_fingerprint(n: int, g: float) -> str:
+    """Fingerprint sources and inputs that can change saved VQE layer results.
+
+    ``max_layers`` is intentionally omitted so a partial scan can be extended.
+    Hashes prevent mixing results from different code, Hamiltonians, or D settings.
+    """
+    instance_path = DATA_DIR / f"tfim_open_N{n}_g{g:.2f}.json"
+    files = (
+        Path(__file__).resolve(), ROOT / "qff_sim.py", ROOT / "requirements.txt",
+        instance_path, _d_path(),
+    )
+    hashes = {
+        path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in files
+    }
+    settings = {
+        "fingerprint_version": 1,
+        "n": int(n),
+        "g": float(g),
+        "seeds": list(SEEDS),
+        "energy_tolerance": ENERGY_TOL,
+        "optimizer": {
+            "method": "L-BFGS-B", "maxiter": OPTIMIZER_MAXITER,
+            "ftol": 1e-12, "gtol": 1e-8, "maxls": 30,
+        },
+        "hva_zz_mode": "cx",
+        "runtime_versions": {
+            package: importlib.metadata.version(package)
+            for package in ("qiskit", "qiskit-aer", "numpy", "scipy")
+        },
+        "files": hashes,
+    }
+    encoded = json.dumps(settings, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def _run_metadata(run: dict[str, Any]) -> dict[str, Any]:
     return {key: value for key, value in run.items() if key != "state"}
 
@@ -208,9 +246,10 @@ def _save_grid_checkpoint(n: int, g: float, rows: list[dict[str, Any]],
     path = _checkpoint_path(n, g)
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "format_version": 1,
+        "format_version": 2,
         "n": int(n),
         "g": float(g),
+        "config_fingerprint": _checkpoint_fingerprint(n, g),
         "completed_layers": sorted({int(row["layers"]) for row in rows}),
         "rows": rows,
         "runs": [_run_metadata(run) for run in runs],
@@ -225,8 +264,13 @@ def _load_grid_checkpoint(n: int, g: float, max_layers: int) -> tuple[list[dict[
     if not path.exists():
         return [], []
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if payload.get("format_version") != 1 or int(payload.get("n", -1)) != n or not math.isclose(float(payload.get("g", -1)), g):
+    if payload.get("format_version") != 2 or int(payload.get("n", -1)) != n or not math.isclose(float(payload.get("g", -1)), g):
         raise ValueError(f"Checkpoint does not match N={n}, g={g:.2f}: {path}")
+    if payload.get("config_fingerprint") != _checkpoint_fingerprint(n, g):
+        raise ValueError(
+            f"Checkpoint settings or source inputs changed for N={n}, g={g:.2f}; "
+            "start a fresh run without --resume."
+        )
     rows = payload.get("rows", [])
     runs = payload.get("runs", [])
     completed = payload.get("completed_layers", [])
@@ -316,6 +360,8 @@ def _load_saved_final_records(n: int = 4) -> tuple[list[dict[str, Any]], dict[fl
 
 
 def run_s1_grid(n: int, max_layers: int, resume: bool = False) -> tuple[list[dict[str, Any]], dict[float, dict[str, Any]], list[dict[str, Any]]]:
+    if isinstance(max_layers, bool) or not isinstance(max_layers, int) or max_layers < 1:
+        raise ValueError("max_layers must be a positive integer")
     rows: list[dict[str, Any]] = []
     final_by_g: dict[float, dict[str, Any]] = {}
     all_runs: list[dict[str, Any]] = []
@@ -770,7 +816,7 @@ def _write_phase2_report(s1_rows: list[dict[str, Any]], noisy_rows: list[dict[st
 
 **Team:** Chicken Leg Piece  
 **Problem:** PS-S1, open-chain transverse-field Ising ground state  
-**Status:** local Phase 2 simulation artifacts; the team submits the public repository URL through the hackathon portal.
+**Status:** public repository containing local Phase 2 simulation artifacts; no portal submission or hardware run is claimed.
 
 ## Summary
 
@@ -854,6 +900,8 @@ The required gates, noise parameters, shot count, seeds, and transpilation setti
 def generate_phase2_outputs(max_layers: int = DEFAULT_MAX_LAYERS, include_n6: bool = False,
                             resume: bool = False, n6_only: bool = False,
                             supplement_only: bool = False) -> dict[str, Any]:
+    if isinstance(max_layers, bool) or not isinstance(max_layers, int) or max_layers < 1:
+        raise ValueError("--max-layers must be a positive integer")
     if n6_only and supplement_only:
         raise ValueError("Choose either --n6-only or --supplement-only.")
     if n6_only:
@@ -863,6 +911,17 @@ def generate_phase2_outputs(max_layers: int = DEFAULT_MAX_LAYERS, include_n6: bo
     violations = qff.validate_processor_d(d, required_qubits=6 if include_n6 else 4)
     if violations:
         raise ValueError("Processor D fails the official checker: " + "; ".join(violations))
+    configured_rates = d.get("error_rates", {})
+    official_rates = {"p1": qff.P1_DEPOL, "p2": qff.P2_DEPOL, "p_readout": qff.P_READOUT}
+    if any(
+        key not in configured_rates
+        or not math.isclose(float(configured_rates[key]), value, rel_tol=0.0, abs_tol=1e-12)
+        for key, value in official_rates.items()
+    ):
+        raise ValueError(
+            "The official Phase 2 benchmark locks Processor D noise rates to "
+            f"{official_rates}; use the separate exploratory API for custom rates."
+        )
     all_rows: list[dict[str, Any]] = []
     all_runs: list[dict[str, Any]] = []
     all_final: dict[tuple[int, float], dict[str, Any]] = {}
@@ -986,6 +1045,8 @@ def main() -> None:
     parser.add_argument("--n6-only", action="store_true", help="Keep checked-in N=4 results and run/resume only the optional N=6 tier")
     parser.add_argument("--supplement-only", action="store_true", help="Regenerate seed and supplementary A/B/D noisy outputs from saved VQE runs")
     args = parser.parse_args()
+    if args.max_layers < 1:
+        parser.error("--max-layers must be a positive integer")
     summary = generate_phase2_outputs(
         max_layers=args.max_layers,
         include_n6=args.include_n6,

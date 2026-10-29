@@ -2,7 +2,7 @@
 
 **Team:** Chicken Leg Piece  
 **Problem:** PS-S1, open-chain transverse-field Ising ground state  
-**Status:** local Phase 2 simulation artifacts; the team submits the public repository URL through the hackathon portal.
+**Status:** public repository containing local Phase 2 simulation artifacts; no portal submission or hardware run is claimed.
 
 ## Summary
 
